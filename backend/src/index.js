@@ -1,8 +1,10 @@
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
 const morgan = require('morgan');
-require('dotenv').config();
+const supabase = require('./config/supabase');
+
 
 const app = express();
 const PORT = process.env.PORT || 5000;

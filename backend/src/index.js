@@ -25,16 +25,18 @@ app.get('/health', (req, res) => {
 });
 
 //route will be imported  and mounted here 
+const instagramRoutes = require('./routes/instagram');
+app.use('/api/instagram', instagramRoutes);
 // app.use instagram api 
 // app.use analytics api
 
 //Globar error handler - catches any error throw in the app
-app.use((err, req, res, next) =>{
-    console.error(err.stack);
-    res.status(500).json({
-        status: 'error',
-        message: err.message || 'Something went wrong'
-    });
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({
+    status: 'error',
+    message: err.message,
+  });
 });
 
 app.listen(PORT, () => {

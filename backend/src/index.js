@@ -24,6 +24,9 @@ app.get('/health', (req, res) => {
     });
 });
 
+const analyticsRoutes = require('./routes/analytics');
+app.use('/api/analytics', analyticsRoutes);
+
 //route will be imported  and mounted here 
 const instagramRoutes = require('./routes/instagram');
 app.use('/api/instagram', instagramRoutes);

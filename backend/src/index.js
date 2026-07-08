@@ -31,6 +31,9 @@ app.use('/api/analytics', analyticsRoutes);
 const instagramRoutes = require('./routes/instagram');
 app.use('/api/instagram', instagramRoutes);
 // app.use instagram api 
+
+const woocommerceRoutes = require('./routes/woocommerce');
+app.use('/api/woocommerce', woocommerceRoutes);
 // app.use analytics api
 
 //Globar error handler - catches any error throw in the app

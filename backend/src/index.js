@@ -32,6 +32,9 @@ const instagramRoutes = require('./routes/instagram');
 app.use('/api/instagram', instagramRoutes);
 // app.use instagram api 
 
+const mailchimpRoutes = require('./routes/mailchimp');
+app.use('/api/mailchimp', mailchimpRoutes);
+
 const woocommerceRoutes = require('./routes/woocommerce');
 app.use('/api/woocommerce', woocommerceRoutes);
 // app.use analytics api

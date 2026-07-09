@@ -4,6 +4,7 @@ const cors = require('cors');
 const helmet = require('helmet');
 const morgan = require('morgan');
 const supabase = require('./config/supabase');
+const { startAutomation } = require('./services/automationEngine');
 
 
 const app = express();
@@ -47,6 +48,9 @@ app.use((err, req, res, next) => {
     message: err.message,
   });
 });
+
+// Start automation engine
+startAutomation();
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);

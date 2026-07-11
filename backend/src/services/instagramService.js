@@ -47,6 +47,7 @@ const getPostsWithInsights = async () => {
           metricsMap[metric.name] = metric.values?.[0]?.value ?? metric.value ?? 0;
         });
         const reach = metricsMap.reach || 0;
+        
         const likes = metricsMap.likes || 0;
         const comments = metricsMap.comments || 0;
         return {

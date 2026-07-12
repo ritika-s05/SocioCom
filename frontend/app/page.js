@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, LineChart, Line, CartesianGrid } from 'recharts';
 
-const API = process.env.NEXT_PUBLIC_API_URL;
+const API = process.env.NEXT_PUBLIC_API_URL || 'https://sociocom-backend.onrender.com';
 
 const PulseDot = ({ color = '#00D9FF' }) => (
   <span style={{ position: 'relative', display: 'inline-block', width: 10, height: 10 }}>

@@ -56,32 +56,39 @@ export default function Dashboard() {
 
   useEffect(() => {
     const fetchAll = async () => {
-      try {
-        const [healthRes, postsRes, analyticsRes, productsRes, campaignsRes] = await Promise.all([
-          fetch(`${API}/health`),
-          fetch(`${API}/api/instagram/posts`),
-          fetch(`${API}/api/analytics/data`),
-          fetch(`${API}/api/woocommerce/products`),
-          fetch(`${API}/api/mailchimp/campaigns`),
-        ]);
-        const health = await healthRes.json();
-        const postsData = await postsRes.json();
-        const analyticsData = await analyticsRes.json();
-        const productsData = await productsRes.json();
-        const campaignsData = await campaignsRes.json();
-        setServerOk(health.status === 'ok');
-        setPosts(postsData.data || []);
-        setAnalytics(analyticsData.data || []);
-        setProducts(productsData.data || []);
-        setCampaigns(campaignsData.data || []);
-      } catch (e) {
-        console.error(e);
-      } finally {
-        setLoading(false);
+      const fetchWithRetry = async (url, retries = 3, delay = 2000) => {
+      for (let i = 0; i < retries; i++) {
+        try {
+          const res = await fetch(url);
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+          return await res.json();
+        } catch (err) {
+          if (i < retries - 1) {
+            await new Promise(r => setTimeout(r, delay));
+          } else throw err;
+        }
       }
     };
-    fetchAll();
-  }, []);
+
+    try {
+      const [health, postsData, analyticsData, productsData, campaignsData] = await Promise.all([
+        fetchWithRetry(`${API}/health`),
+        fetchWithRetry(`${API}/api/instagram/posts`),
+        fetchWithRetry(`${API}/api/analytics/data`),
+        fetchWithRetry(`${API}/api/woocommerce/products`),
+        fetchWithRetry(`${API}/api/mailchimp/campaigns`),
+      ]);
+      setServerOk(health.status === 'ok');
+      setPosts(postsData.data || []);
+      setAnalytics(analyticsData.data || []);
+      setProducts(productsData.data || []);
+      setCampaigns(campaignsData.data || []);
+    } catch (e) {
+      console.error('Failed to fetch data:', e);
+    } finally {
+      setLoading(false);
+    }
+  };}, []);
 
   const totalReach = posts.reduce((s, p) => s + (p.reach || 0), 0);
   const totalLikes = posts.reduce((s, p) => s + (p.likes || 0), 0);
